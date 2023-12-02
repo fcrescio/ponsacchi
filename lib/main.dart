@@ -32,6 +32,7 @@ class CameraAppState extends State<CameraApp> {
   AudioRecorder? recorder;
   bool _customQuestion = false;
   String _recordedFilePath = "";
+  OpenAIService openAIService = OpenAIService(dotenv.env['APIKEY']!);
 
   @override
   void initState() {
@@ -74,6 +75,13 @@ class CameraAppState extends State<CameraApp> {
               handleSwipeLeft();
             }
           },
+          onVerticalDragEnd: (details) {
+            // Check the direction of the vertical drag
+            if (details.primaryVelocity! > 0) {
+              // Swiped Down
+              handleSwipeDown();
+            }
+          },
           child: CameraPreview(controller!), // Or your existing camera preview widget
         ),
       ),
@@ -86,16 +94,10 @@ class CameraAppState extends State<CameraApp> {
       String question = "What’s in this image?";
       String detail = "low";
       String context = "";
-      OpenAIService openAIService = OpenAIService(dotenv.env['APIKEY']!);
       if (_customQuestion) {
         _recordedFilePath = (await recorder?.stop())!;
         await tts.speak("Ho capito ora ci penso");
         question = await openAIService.understandQuestion(File(_recordedFilePath));
-        if (question.startsWith("Impostazione")) {
-          baseContext = question.substring("Impostazione sistema".length).trim();
-          await tts.speak("Nuovo contesto: $baseContext");
-          return;
-        }
         detail = "high";
         context = "You always provide a very short summary of the question asked before answering.";
         setState(() => _customQuestion = false);
@@ -121,6 +123,14 @@ class CameraAppState extends State<CameraApp> {
     if (lastResponse.isNotEmpty) {
       tts.speak(lastResponse);
     }
+  }
+
+  void handleSwipeDown() async {
+    _recordedFilePath = (await recorder?.stop())!;
+    await tts.speak("Hai chiesto di impostare una nuova istruzione di sistema.");
+    String question = await openAIService.understandQuestion(File(_recordedFilePath));
+    baseContext = question;
+    await tts.speak("Nuovo contesto: $baseContext");
   }
 
   Future<void> _startRecording() async {

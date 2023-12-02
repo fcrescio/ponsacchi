@@ -2,15 +2,20 @@
 
 Veder con gli orecchi
 
-## Getting Started
+## Istruzioni
 
-This project is a starting point for a Flutter application.
+Per compilare creare un file .env con dentro dichiarata la propria APIKEY di OpenAI
 
-A few resources to get you started if this is your first Flutter project:
+## Come usare ponsacchi
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Un click: descrizione dell'immagine o pone domanda registrata
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Click lungo: registra la voce per porre una domanda o nuova personalità. Nota: continua a registrare fino a quando non si fa un nuovo click o swipe basso.
+
+Swipe a sinistra: ripete l'ultima risposta
+
+Swipe in basso: imposta la personaltà come da istruzioni registrate
+
+## Licenza
+
+Fatene quello che volete. Se ne fate un'applicazione migliore fatemi un fischio. Pagherei per averla e non essere costretto a scrivermela.
